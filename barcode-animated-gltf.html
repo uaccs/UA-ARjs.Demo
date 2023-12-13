@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <head>
-  <title>Marcador Preset GLTF Animated Drone</title>
-
-  <!-- include A-Frame -->
-  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-
-  <!-- we import arjs version without NFT but with marker + location based support -->
-  <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
-
-  <!-- animation of the gltf-model -->
-  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
+    <meta charset="UTF-8">   
+    <!-- Initialize the viewport -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+   
+	<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1.3.0/dist/aframe-master.min.js"></script>
+	<!-- include aframe-ar.js -->
+	<script src="build/aframe-ar.js"></script>	
+	<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
 </head>
 
 <body style='margin : 0px; overflow: hidden;'>
@@ -17,9 +15,9 @@
     <!-- depending on your needs. For now just stick with these ones. -->
     <!-- Notice that we have added a new detectionMode parameters and also a matrixCodeType one. -->
     <!-- MatrixCodeType is 3x3 because we have created a 3x3 marker before using the online tool  -->
-  <a-scene embedded arjs>
+	<a-scene>
 	
-	    <a-assets>
+	    <a-assets timeout="100">
 			<a-asset-item id="mrcubie" src="./mrcubie.glb"></a-asset-item>
 		</a-assets>
          
@@ -29,7 +27,9 @@
          <a-marker type="barcode" value="1">
          
 			<a-entity gltf-model='#mrcubie'
-                animation-mixer="clip: Run;"></a-entity>
+				position="0 0.1 0"
+				scale="1 1 1"
+                animation-mixer="loop: repeat" >
  
          </a-marker>
          
