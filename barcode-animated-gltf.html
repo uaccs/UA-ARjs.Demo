@@ -30,7 +30,9 @@
     <!-- depending on your needs. For now just stick with these ones. -->
     <!-- Notice that we have added a new detectionMode parameters and also a matrixCodeType one. -->
     <!-- MatrixCodeType is 3x3 because we have created a 3x3 marker before using the online tool  -->
-    <a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
+	<a-scene vr-mode-ui="enabled: false;"
+         renderer="logarithmicDepthBuffer: true;"
+         embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
 	
 	    <a-assets>
 			<a-asset-item id="mrcubie" src="./mrcubie.glb"></a-asset-item>
@@ -44,7 +46,7 @@
 			<a-entity gltf-model='#mrcubie'
 				position="0 0.1 0"
 				scale="1 1 1"
-                animation-mixer >
+                animation-mixer ></a-entity>
  
          </a-marker>
          
