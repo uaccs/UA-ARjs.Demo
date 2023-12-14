@@ -17,13 +17,14 @@
 	
 	    <a-assets>
 			<a-asset-item id="robot" src="./assets/Robo8.glb"></a-asset-item>
+			<audio id="kpop" src="./mp3/TWICE   Dance Again.mp3" autoplay="true" loop="true" preload="auto"></audio>
 		</a-assets>
          
          <!-- Defines the pattern marker that we are going to use. Notice that we are not providing the image file, but the  -->
              
 				
 		 <a-marker type='barcode' value='11'>
-					<a-entity sound="src: url(./mp3/TWICE   Dance Again.mp3); autoplay: true; loop: true;"
+					<a-entity sound="src: #kpop"
 						gltf-model="#robot"
 						scale="1 1 1" animation-mixer>
 					</a-entity>
