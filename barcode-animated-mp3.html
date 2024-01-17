@@ -6,29 +6,116 @@
 	<script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@9b8609bd84a292ef97bf1e8589401ae0d3201280/dist/aframe-master.min.js"></script>
 	<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var scene = document.querySelector('a-scene');
+			var splash = document.querySelector('#splash');
+			scene.addEventListener('loaded', function (e) {
+				splash.style.display = 'none';
+			});
+		});
+		
+		var playing = false;
+		
+			AFRAME.registerComponent('soundhandler', {
+				init: function () {
+					this.soundEl = document.querySelector('[sound]');
+					this.marker = document.querySelector('#marker');
+					//this.visible = false;
+						  this.tick = AFRAME.utils.throttleTick(this.tick, 500, this);
+					
+				},
+				tick: function () {
+		
+					if (this.marker.object3D.visible && playing == false) {
+						console.log("Audio is playing")
+						//this.soundEl.components.sound.stopSound(); // stop if playing
+						this.soundEl.components.sound.playSound(); // play
+						//this.visible = true; // make sure it plays only once per visible
+						playing = true;
+					} else if (!this.marker.object3D.visible) {
+						this.soundEl.components.sound.pauseSound();
+						//this.visible = false;
+						playing = false;
+					}
+				}
+			});
+		</script>
+		<style>
+			#splash {
+			  position: fixed;
+			  z-index: 99999;
+			
+			  display: flex;
+			  align-items: center;
+			  justify-content: center;
+			  flex-direction: column;
+			  
+			  top: 0;
+			  bottom: 0;
+			  left: 0;
+			  right: 0;
+			  
+			  margin: auto;
+			
+			  font-size: 12px;
+			  font-family: sans-serif;
+			  color: #fff;
+			  text-transform: uppercase;
+			
+			  background-color: rgba(0, 0, 0, .99);
+			  transition: all 1s ease-out;
+			}
+			
+			@keyframes spin {
+			  0% {
+				transform: rotate(0deg);
+			  }
+			  100% {
+				transform: rotate(360deg);
+			  }
+			}
+			
+			#splash .loading {
+			  width: 24px;
+			  height: 24px;
+			  border-radius: 50%;
+			  border: 0.25rem solid rgba(255, 255, 255, 0.2);
+			  border-top-color: #fff;
+			  animation: spin 1s infinite linear;
+			  margin-bottom: 15px;
+			}
+			</style>
 </head>
 
 <body style='margin : 0px; overflow: hidden;'>
+	<div id="splash">
+		<div class="loading"></div>
+	  </div>
     <!-- a-scene defines the scene that we are agoing to use. After arjs= there are various options that can be customized  -->
     <!-- depending on your needs. For now just stick with these ones. -->
     <!-- Notice that we have added a new detectionMode parameters and also a matrixCodeType one. -->
     <!-- MatrixCodeType is 3x3 because we have created a 3x3 marker before using the online tool  -->
-	<a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
+	<a-scene 
+		soundhandler
+		renderer="logarithmicDepthBuffer: true;"
+		embedded arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
 	
 	    <a-assets>
 			<a-asset-item id="robot" src="./assets/Robo8.glb"></a-asset-item>
-			<audio id="kpop" src="./mp3/TWICE   Dance Again.mp3" autoplay="true" loop="true" preload="auto"></audio>
+			<audio id="music" src="./mp3/TWICE   Dance Again.mp3" autoplay="true" loop="true" preload="auto"></audio>
 		</a-assets>
          
          <!-- Defines the pattern marker that we are going to use. Notice that we are not providing the image file, but the  -->
              
 				
-		 <a-marker type='barcode' value='11'>
-					<a-entity sound="src: #kpop"
+		 		<a-marker type='barcode' value='20' id="marker">
+					<a-entity 
 						gltf-model="#robot"
-						scale="1 1 1" animation-mixer>
+						scale=".5 .5 .5" animation-mixer>
 					</a-entity>
-				</a-marker>         
+				</a-marker>   
+				<a-entity sound="src: #music" autoplay="false"></a-entity>      
 				
          <!-- Define the camera of the scene -->
          <a-entity camera></a-entity>
